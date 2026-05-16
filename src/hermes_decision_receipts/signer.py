@@ -24,6 +24,8 @@ from typing import Any
 
 from nacl.signing import SigningKey, VerifyKey
 
+PREDICATE_TYPE_DECISION_RECEIPT = "https://veritasacta.com/attestation/decision-receipt/v0.1"
+
 # ─── JCS canonicalization (RFC 8785 + AIP-0001) ─────────────────────────
 
 
@@ -249,6 +251,7 @@ class ReceiptSigner:
         payload: dict[str, Any] = {
             "type": "hermes:decision",
             "spec": "draft-farley-acta-signed-receipts-01",
+            "predicateType": PREDICATE_TYPE_DECISION_RECEIPT,
             "tool_name": tool_name,
             "tool_input_hash": tool_input_hash,
             "decision": decision,

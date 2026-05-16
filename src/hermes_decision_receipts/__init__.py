@@ -22,7 +22,7 @@ Verify externally:
 
 from __future__ import annotations
 
-from .signer import Receipt, ReceiptChain, ReceiptSigner
+from .signer import PREDICATE_TYPE_DECISION_RECEIPT, Receipt, ReceiptChain, ReceiptSigner
 
 __version__ = "0.1.0a1"
-__all__ = ["Receipt", "ReceiptChain", "ReceiptSigner"]
+__all__ = ["PREDICATE_TYPE_DECISION_RECEIPT", "Receipt", "ReceiptChain", "ReceiptSigner"]

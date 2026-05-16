@@ -5,7 +5,8 @@ Ed25519-signed decision receipts for [NousResearch/hermes-agent](https://github.
 **Apache-2.0 · Python 3.10+ · JCS (RFC 8785) + Ed25519 (RFC 8032)**
 
 ```bash
-pip install hermes-decision-receipts  # v0.1.0 target end-of-April 2026
+# v0.1.0-alpha.1 / v0.1.0-rc.1: install from source until PyPI publication
+pip install git+https://github.com/ScopeBlind/hermes-decision-receipts.git
 ```
 
 ## What this is
@@ -30,7 +31,7 @@ This repo and [aeoess/hermes-aps-delegation](https://github.com/aeoess/hermes-ap
 |---|---|---|
 | Delegation / identity / charter enforcement | [aeoess/hermes-aps-delegation](https://github.com/aeoess/hermes-aps-delegation) | @aeoess |
 | Decision receipts / per-tool-call evidence | **this repo** | @tomjwxf |
-| Joint audit walker (receipts + delegation chain) | `hermes-audit-walker` (joint, coming) | joint |
+| Joint audit walker (receipts + delegation chain) | [aeoess/hermes-audit-walker](https://github.com/aeoess/hermes-audit-walker) | @aeoess / joint interop |
 
 A Hermes agent using both produces receipts that:
 
@@ -91,6 +92,7 @@ Receipts follow `draft-farley-acta-signed-receipts-01`:
   "payload": {
     "type": "hermes:decision",
     "spec": "draft-farley-acta-signed-receipts-01",
+    "predicateType": "https://veritasacta.com/attestation/decision-receipt/v0.1",
     "tool_name": "web_search",
     "tool_input_hash": "sha256:...",
     "decision": "allow",
@@ -125,7 +127,7 @@ No ScopeBlind or Nous servers are contacted. The verifier is Apache-2.0 and offl
 
 ## Status
 
-**v0.1.0-alpha.1**, ~April 19, 2026. Target v0.1.0 coordinated release with `hermes-aps-delegation` end of April.
+**v0.1.0-alpha.1**, April 2026. The APS side and `aeoess/hermes-audit-walker` now exist; the remaining gate for `v0.1.0` is replacing the audit walker mock with this real signer and tagging both sides once the round-trip stays green.
 
 Not yet on PyPI. Install from source:
 
@@ -144,6 +146,7 @@ pip install -e ".[dev]"
 ## Related
 
 - [aeoess/hermes-aps-delegation](https://github.com/aeoess/hermes-aps-delegation) — APS delegation companion (same composition story, different layer).
+- [aeoess/hermes-audit-walker](https://github.com/aeoess/hermes-audit-walker) — Offline verifier for the APS + decision-receipt cross-link.
 - [draft-farley-acta-signed-receipts](https://datatracker.ietf.org/doc/draft-farley-acta-signed-receipts/) — IETF Internet-Draft (receipt format).
 - [in-toto/attestation#549](https://github.com/in-toto/attestation/pull/549) — in-toto Decision Receipt predicate (composes with SLSA pipeline).
 - [@veritasacta/verify](https://www.npmjs.com/package/@veritasacta/verify) — Reference offline verifier (Apache-2.0).

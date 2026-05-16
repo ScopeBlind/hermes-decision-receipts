@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from hermes_decision_receipts import ReceiptSigner
+from hermes_decision_receipts import PREDICATE_TYPE_DECISION_RECEIPT, ReceiptSigner
 from hermes_decision_receipts.signer import _jcs_canonicalize
 
 
@@ -19,6 +19,7 @@ def test_signer_generates_and_signs() -> None:
     )
     assert receipt.payload["tool_name"] == "web_search"
     assert receipt.payload["decision"] == "allow"
+    assert receipt.payload["predicateType"] == PREDICATE_TYPE_DECISION_RECEIPT
     assert receipt.signature["alg"] == "EdDSA"
     assert len(receipt.signature["sig"]) == 128  # 64 bytes hex-encoded
 
@@ -138,3 +139,15 @@ def test_receipt_json_parseable() -> None:
     parsed = json.loads(receipt.to_json())
     assert parsed["payload"]["tool_name"] == "x"
     assert parsed["signature"]["alg"] == "EdDSA"
+
+
+def test_predicate_type_matches_audit_walker_contract() -> None:
+    signer = ReceiptSigner.generate()
+    receipt = signer.sign_tool_call(
+        tool_name="read_file",
+        tool_args={"path": "/workspace/repo/src/lib.py"},
+        decision="allow",
+        delegation_chain_root="sha256:" + "0" * 64,
+    )
+    assert receipt.payload["predicateType"] == PREDICATE_TYPE_DECISION_RECEIPT
+    assert receipt.verify(signer.public_key_hex)
